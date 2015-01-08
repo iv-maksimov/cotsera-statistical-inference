@@ -1,0 +1,7 @@
+---
+title: "Statistical Inference Course Project - Part 1"
+author: "Ivan Maksimov"
+date: "08.01.2015"
+output: html_document
+---
+
