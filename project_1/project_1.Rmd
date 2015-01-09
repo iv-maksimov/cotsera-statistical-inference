@@ -2,13 +2,16 @@
 title: "Statistical Inference, Course Project - Part1"
 author: "Ivan Maksimov"
 date: "08.01.2015"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
-
 
 
 ####Introdaction
 The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also also $1/\lambda$. Set $\lambda=0.2$  for all of the simulations. In this simulation, you will investigate the distribution of averages of 40 exponential(0.2)s. Note that you will need to do a thousand or so simulated averages of 40 exponentials.
+
+$$1/\lambda$$
 
 In this exercise we should
 
@@ -17,6 +20,7 @@ In this exercise we should
 3.  Show that the distribution is approximately normal.
 
 ####Exponential sampling parameters
+
 ```{r}
 lambda <- 0.2 #Set rate to 0.2
 sampleSize <- 40 #Set sample size to 40
@@ -57,8 +61,3 @@ Table 1: Summary statistics
 |-------------:|-------------:|-----------------:|-------------:|
 |   Theoretical|  `r theoMean`|        `r theoSd`|   `r theoVar`|
 |        Sample|`r sampleMean`|      `r sampleSd`| `r sampleVar`|
-
-
-
-
-

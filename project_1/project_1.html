@@ -61,6 +61,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="introdaction" class="section level4">
 <h4>Introdaction</h4>
 <p>The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also also <span class="math">\(1/\lambda\)</span>. Set <span class="math">\(\lambda=0.2\)</span> for all of the simulations. In this simulation, you will investigate the distribution of averages of 40 exponential(0.2)s. Note that you will need to do a thousand or so simulated averages of 40 exponentials.</p>
+<p><span class="math">\[1/\lambda\]</span></p>
 <p>In this exercise we should</p>
 <ol style="list-style-type: decimal">
 <li>Show the sample mean and compare it to the theoretical mean of the distribution.</li>
@@ -97,24 +98,24 @@ sampleVar &lt;- round((sampleSd^2),3)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left"></th>
-<th align="left">Mean</th>
-<th align="left">Standart Diviation</th>
-<th align="left">Variance</th>
+<th align="right"></th>
+<th align="right">Mean</th>
+<th align="right">Standart Diviation</th>
+<th align="right">Variance</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Theoretical</td>
-<td align="left">5</td>
-<td align="left">0.791</td>
-<td align="left">0.626</td>
+<td align="right">Theoretical</td>
+<td align="right">5</td>
+<td align="right">0.791</td>
+<td align="right">0.626</td>
 </tr>
 <tr class="even">
-<td align="left">Sample</td>
-<td align="left">5</td>
-<td align="left">0.804</td>
-<td align="left">0.646</td>
+<td align="right">Sample</td>
+<td align="right">4.962</td>
+<td align="right">0.773</td>
+<td align="right">0.598</td>
 </tr>
 </tbody>
 </table>
