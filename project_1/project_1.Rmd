@@ -3,23 +3,38 @@ title: "Statistical Inference, Course Project - Part1"
 author: "Ivan Maksimov"
 date: "08.01.2015"
 output:
+  pdf_document:
+    number_sections: yes
   html_document: default
-  pdf_document: default
 ---
 
+#Introdaction
 
-####Introdaction
-The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also also $1/\lambda$. Set $\lambda=0.2$  for all of the simulations. In this simulation, you will investigate the distribution of averages of 40 exponential(0.2)s. Note that you will need to do a thousand or so simulated averages of 40 exponentials.
+##The exponential distribution
 
-$$1/\lambda$$
+In this project we should investigate the exponential distribution in R and compare it with the Central Limit Theorem. The exponential distribution (a.k.a. negative exponential distribution) is the probability distribution that describes the time between events in a Poisson process, i.e. a process in which events occur continuously and independently at a constant average rate. The probability density function (pdf) of an exponential distribution is 
+\begin{equation*}
+ \begin{cases}
+  f(x;\lambda) = \lambda e^{- \lambda x}, &\text{$x\geqslant 0$}\\ 
+  0, &\text{$x<0$} 
+ \end{cases}
+\end{equation*}
 
-In this exercise we should
+Here $\lambda > 0$ is the parameter of the distribution, often called the rate parameter. The distribution is supported on the interval $[0, \infty)$. 
+The mean of exponential distribution is $1/\lambda$ and the standard deviation is also $1/\lambda$.
+
+##Objectives
+In this project we should
 
 1.  Show the sample mean and compare it to the theoretical mean of the distribution.
 2.  Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
 3.  Show that the distribution is approximately normal.
 
-####Exponential sampling parameters
+#Data Processing
+
+##Exponential sampling parameters
+
+The exponential distribution can be randomly generated in R with the function `rexp(n, lambda)` where n is the number of observations and $\lambda$ is the rate parameter. Set $\lambda = 0.2$ for all of the simulations. We investigate the distribution of averages of 40 exponentials and need to do a thousand simulations.
 
 ```{r}
 lambda <- 0.2 #Set rate to 0.2
@@ -33,27 +48,29 @@ Let's do a thousand simulated averages of 40 exponentials.
 expoDist <- replicate(n = nSamples, expr = rexp(n = sampleSize, lambda))
 ```
 
-####Calculate theoretical and sample summary statistics
+##Calculate theoretical and sample summary statistics
 
-######Means
+
+###Means
 ```{r}
 theoMean <- round((1/lambda), 3) #Theoretical
 sampleMean <- round(mean(colMeans(expoDist)), 3) #Sample
 ```
 
-######Standard Deviations
+###Standard Deviations
 ```{r}
 theoSd <- round((1/lambda * (1/sqrt(sampleSize))), 3) #Theoretical
 sampleSd <- round(sd(colMeans(expoDist)), 3) #Sample
 ```
 
-######Varince
+###Variance
 ```{r}
-theoVar <- round((theoSd^2),3)
-sampleVar <- round((sampleSd^2),3)
+theoVar <- round((theoSd^2), 3)
+sampleVar <- round((sampleSd^2), 3)
 ```
 
-Results of calculation are showed in table 1. 
+##Summary statistics and inferences
+The theoretical and empirical summary statistics of the simulated exponential distribution for this exercise can be verified in Table 1 bellow.
 
 Table 1: Summary statistics
 
@@ -61,3 +78,40 @@ Table 1: Summary statistics
 |-------------:|-------------:|-----------------:|-------------:|
 |   Theoretical|  `r theoMean`|        `r theoSd`|   `r theoVar`|
 |        Sample|`r sampleMean`|      `r sampleSd`| `r sampleVar`|
+
+###Answer to objective 1
+The center of the simulated sampling distribution (`r sampleMean`) is very close to the theoretical center (`r theoMean`) of the distribution.
+
+###Answer to objective 2
+The standard deviation of sampling `r sampleSd` is also close to the theoretical standard deviation of `r theoSd`.
+
+###Answer to objective 3
+
+Due to the central limit theorem, the averages of samples follow normal distribution. The figure bellow also shows the density computed using the histogram and the normal density plotted with theoretical mean and variance values. 
+
+```{r,warning=FALSE,fig.height=3.5, fig.width=8}
+library(ggplot2)
+hist.df <- data.frame(Means = colMeans(expoDist))
+ggplot(data = hist.df, aes(x = Means)) + 
+        geom_histogram(aes(y=..density..), fill = "steelblue", 
+                       binwidth = 1/7, color = "darkgrey", alpha = 1/3) +
+        geom_density(aes(color = "Means distribution"), size = 1, show_guide=FALSE)+
+        stat_function(fun=dnorm, arg=list(mean=theoMean, sd=theoSd), 
+                      aes(color = "Normal distribution"), size = 1)+
+        geom_vline(aes(xintercept=sampleMean, colour="Sample mean"), size = 1)+
+        geom_vline(aes(xintercept=theoMean, colour = "Theoretical mean"), size = 1)+
+        theme(legend.justification=c(1,0), legend.position=c(1,0.5))+ 
+        labs(title = "Means Distribution", x = "Means of exponentials (0.2)")+
+        scale_x_continuous(limits = c(1, 10), breaks=1:10)+
+        scale_color_discrete(name ="Compared Parameters")
+```
+
+The aproximate normality of this distribution can by also confirmed by the normality test depicted in the Q-Q plot.
+
+```{r,warning=FALSE,fig.height=3.5, fig.width=8}
+qqnorm(colMeans(expoDist),col = "steelblue")
+qqline(colMeans(expoDist), col = "red",lwd=5)
+```
+
+
+
